@@ -20,11 +20,87 @@
   grid-column: span 2;
 }
 
+/*
+ * Tiles the filter excludes keep their place (and are inert). Their content
+ * fades out fully and only an empty outline stays. Figma fades the whole tile
+ * to 12%; Jawad chose this instead. Photo tiles get the outline and white
+ * background the other tiles have.
+ */
+.item > a {
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease;
+}
+
+.item > a > * {
+  transition: opacity 200ms ease;
+}
+
+.faded > a {
+  border-color: var(--color-border);
+  background-color: var(--color-bg);
+}
+
+.faded > a > * {
+  opacity: 0;
+}
+
+.older {
+  margin-top: var(--space-6);
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ---------- Filter ---------- */
+
+.filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.filterLabel {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--line-height-small);
+}
+
+.filterButton {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: var(--line-height-small);
+  cursor: pointer;
+}
+
+.filterButton:hover,
+.filterButton:focus-visible {
+  border-color: var(--color-accent);
+}
+
+.filterButton[aria-pressed="true"] {
+  border-color: var(--color-text);
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
 .empty {
   color: var(--color-text-secondary);
 }
 
 @media (min-width: 640px) {
+  .older {
+    margin-top: var(--space-8);
+  }
+
   .grid {
     --cols: 3;
     --gap: var(--space-6);

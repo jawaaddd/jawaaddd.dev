@@ -1,0 +1,204 @@
+/*
+ * Mobile first: a bottom sheet. From 640px: a centered panel whose width
+ * depends on the post type (739 wide posts, 548 notes, 928 photos).
+ */
+.modal {
+  width: 100%;
+  max-width: 100%;
+  max-height: calc(100dvh - var(--space-12));
+  margin: auto 0 0;
+  padding: 0;
+  border: none;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.modal:focus-visible {
+  outline: none;
+}
+
+.modal::backdrop {
+  background: var(--scrim, rgb(0 0 0 / 0.4));
+}
+
+/* The panel fills the dialog so only the body scrolls; header and footer stay put. */
+.panel {
+  display: flex;
+  flex-direction: column;
+  max-height: inherit;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.meta {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--line-height-small);
+}
+
+.label {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  line-height: var(--line-height-tiny);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+/* 44px tap target around 20px of text, without moving the layout. */
+.close {
+  margin: calc(var(--space-3) * -1);
+  padding: var(--space-3);
+  border: none;
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: var(--line-height-small);
+  cursor: pointer;
+}
+
+.close:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 4px;
+}
+
+.title {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: var(--line-height-h3);
+  overflow-wrap: break-word;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-6) var(--space-4);
+  overflow-wrap: break-word;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.share {
+  width: 100%;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: var(--line-height-small);
+  cursor: pointer;
+}
+
+.share:hover,
+.share:focus-visible {
+  border-color: var(--color-accent);
+}
+
+.noteText {
+  font-size: var(--text-lg);
+  line-height: var(--line-height-h4);
+  white-space: pre-line;
+}
+
+.figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.caption {
+  font-weight: 500;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--color-placeholder);
+}
+
+@media (min-width: 640px) {
+  .modal {
+    width: calc(100% - var(--space-12));
+    max-height: calc(100dvh - var(--space-24));
+    margin: auto;
+    border: 1px solid var(--color-border);
+  }
+
+  .wide {
+    max-width: 739px;
+  }
+
+  .note {
+    max-width: 548px;
+  }
+
+  .photo {
+    max-width: 928px;
+  }
+
+  .header {
+    gap: var(--space-4);
+    padding: var(--space-8) var(--space-12) var(--space-6);
+  }
+
+  .title {
+    font-size: var(--text-2xl);
+    line-height: var(--line-height-h2);
+  }
+
+  .body {
+    padding: var(--space-8) var(--space-12);
+  }
+
+  .footer {
+    padding: var(--space-4) var(--space-12);
+  }
+
+  .share {
+    width: auto;
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .photo .header,
+  .photo .body,
+  .photo .footer {
+    padding-inline: var(--space-6);
+  }
+
+  /* Tall photos shouldn't push the caption off screen. */
+  .photo .image {
+    width: auto;
+    max-width: 100%;
+    max-height: calc(100dvh - 20rem);
+    margin-inline: auto;
+  }
+}

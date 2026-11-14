@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { NextRequest } from "next/server";
-import { dataDir } from "@/lib/db/connection";
+import { resolveUpload } from "@/lib/uploads";
 
 const CONTENT_TYPES: Record<string, string> = {
   ".webp": "image/webp",
@@ -14,13 +14,10 @@ const CONTENT_TYPES: Record<string, string> = {
 
 /** Serves uploaded images from the data volume. Upload filenames are unique, so they cache forever. */
 export async function GET(_req: NextRequest, ctx: RouteContext<"/media/[...path]">) {
-  const segments = (await ctx.params).path;
-  const root = path.join(dataDir(), "uploads");
-  const file = path.resolve(root, ...segments);
-  const type = CONTENT_TYPES[path.extname(file).toLowerCase()];
-
-  // Reject anything that resolves outside uploads/ (e.g. "..") or isn't an image.
-  if (!file.startsWith(root + path.sep) || !type) return notFound();
+  // Null for anything that resolves outside uploads/ (e.g. "..").
+  const file = resolveUpload((await ctx.params).path);
+  const type = file && CONTENT_TYPES[path.extname(file).toLowerCase()];
+  if (!file || !type) return notFound();
 
   try {
     const body = await fs.readFile(file);

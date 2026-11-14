@@ -13,13 +13,14 @@ export const metadata: Metadata = {
   description: site.description,
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children, modal }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <body>
         <ToastProvider>
           <Nav />
           <main>{children}</main>
+          {modal}
           <Footer />
         </ToastProvider>
       </body>

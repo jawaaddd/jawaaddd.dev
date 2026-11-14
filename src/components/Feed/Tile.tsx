@@ -24,7 +24,7 @@ type TileLinkProps = { post: FeedPost; className: string; children: React.ReactN
 
 function TileLink({ post, className, children }: TileLinkProps) {
   return (
-    <Link href={`/post/${post.slug}`} className={`${styles.tile} ${className}`}>
+    <Link href={`/post/${post.slug}`} scroll={false} className={`${styles.tile} ${className}`}>
       {children}
     </Link>
   );

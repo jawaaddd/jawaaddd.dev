@@ -79,12 +79,29 @@ function toFeedPost(row: FeedRow): FeedPost {
     slug: row.slug,
     title: row.title,
     excerpt: row.excerpt,
-    text: row.body_md,
+    text: isNote(row.type) ? row.body_md : null,
     imagePath: row.image_path,
     caption: row.caption,
     publishedAt: row.published_at,
   };
 }
+
+/** Everything needed to show one post opened. */
+export type Post = FeedPost & { body: string | null };
+
+/** A published post by slug, or null if there's no such post or it's a draft. */
+export function getPublishedPost(slug: string): Post | null {
+  const row = getDb()
+    .prepare<[string], FeedRow>(
+      `SELECT id, type, slug, title, excerpt, body_md, image_path, caption, published_at
+         FROM posts
+        WHERE slug = ? AND status = 'published' AND published_at IS NOT NULL`,
+    )
+    .get(slug);
+  return row ? { ...toFeedPost(row), body: row.body_md } : null;
+}
+
+export const isNote = (type: PostType) => type === "til" || type === "thought" || type === "idea";
 
 /** Public URL for a file stored under uploads/ on the data volume. */
 export const mediaUrl = (imagePath: string) => `/media/${imagePath}`;

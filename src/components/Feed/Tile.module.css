@@ -149,21 +149,6 @@
   border-color: transparent;
 }
 
-/* Fades the photo toward white behind the label and caption so the dark text stays legible. */
-.photo::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(
-    to bottom,
-    rgb(255 255 255 / 0.8),
-    rgb(255 255 255 / 0) 30%,
-    rgb(255 255 255 / 0) 55%,
-    rgb(255 255 255 / 0.9)
-  );
-}
-
 .photo:hover,
 .photo:focus-visible {
   border-color: var(--color-accent);
@@ -176,7 +161,6 @@
 .photo .label,
 .meta {
   position: relative;
-  z-index: 2;
 }
 
 .meta {
