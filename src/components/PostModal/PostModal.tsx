@@ -1,7 +1,7 @@
-import Image from "next/image";
+import { Markdown } from "@/components/Markdown/Markdown";
+import { UploadedImage } from "@/components/UploadedImage/UploadedImage";
 import { formatDate } from "@/lib/dates";
-import { isNote, mediaUrl, TYPE_LABELS, type Post } from "@/lib/posts";
-import { imageSize } from "@/lib/uploads";
+import { getPostImages, isNote, TYPE_LABELS, type Post } from "@/lib/posts";
 import { ModalShell, type ModalVariant } from "./ModalShell";
 import styles from "./PostModal.module.css";
 
@@ -28,10 +28,11 @@ export async function PostModal({ post, dismiss }: Props) {
       {variant === "photo" && (
         <figure className={styles.figure}>
           {post.imagePath && (
-            <PostImage
+            <UploadedImage
               path={post.imagePath}
               alt={post.caption ?? ""}
               sizes="(min-width: 640px) 878px, 100vw"
+              className={styles.image}
             />
           )}
           {post.caption && <figcaption className={styles.caption}>{post.caption}</figcaption>}
@@ -41,33 +42,16 @@ export async function PostModal({ post, dismiss }: Props) {
       {variant === "wide" && (
         <>
           {post.type === "project" && post.imagePath && (
-            <PostImage path={post.imagePath} alt="" sizes="(min-width: 640px) 643px, 100vw" />
+            <UploadedImage
+              path={post.imagePath}
+              alt=""
+              sizes="(min-width: 640px) 643px, 100vw"
+              className={styles.image}
+            />
           )}
-          {/* Plain paragraphs until Markdown rendering lands in phase 5. */}
-          {post.body
-            ?.split(/\n\s*\n/)
-            .filter(Boolean)
-            .map((paragraph, i) => (
-              <p key={i}>{paragraph}</p>
-            ))}
+          {post.body && <Markdown source={post.body} images={getPostImages(post.id)} />}
         </>
       )}
     </ModalShell>
-  );
-}
-
-/** A full-width image at its natural aspect ratio, so nothing shifts when it loads. */
-async function PostImage({ path, alt, sizes }: { path: string; alt: string; sizes: string }) {
-  const size = await imageSize(path);
-  if (!size) return null;
-  return (
-    <Image
-      src={mediaUrl(path)}
-      alt={alt}
-      width={size.width}
-      height={size.height}
-      sizes={sizes}
-      className={styles.image}
-    />
   );
 }

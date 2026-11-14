@@ -1,0 +1,169 @@
+/*
+ * Markdown body, per the "Markdown rendering" frame: 16px between blocks,
+ * headings with extra space above, dividers with 32px on each side.
+ */
+.markdown {
+  overflow-wrap: break-word;
+}
+
+.markdown > * + *,
+.markdown blockquote > * + *,
+.markdown li > * + * {
+  margin-top: var(--space-4);
+}
+
+/* ## (and #): 32px above, 16px below. */
+.h2 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: var(--line-height-h3);
+}
+
+/* ### and deeper: 24px above, 16px below. */
+.h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: var(--line-height-h4);
+}
+
+.markdown > * + .h2 {
+  margin-top: var(--space-8);
+}
+
+.markdown > * + .h3 {
+  margin-top: var(--space-6);
+}
+
+.markdown a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.markdown ul,
+.markdown ol {
+  padding-left: var(--space-6);
+}
+
+.markdown ul {
+  list-style: disc;
+}
+
+.markdown ol {
+  list-style: decimal;
+}
+
+.markdown li + li,
+.markdown li > ul,
+.markdown li > ol {
+  margin-top: var(--space-2);
+}
+
+/* GitHub-style task lists: the checkbox replaces the bullet. */
+.markdown li:has(> input[type="checkbox"]) {
+  list-style: none;
+}
+
+.markdown li > input[type="checkbox"] {
+  margin: 0 var(--space-2) 0 calc(var(--space-6) * -1);
+  accent-color: var(--color-accent);
+}
+
+.markdown code {
+  font-family: var(--font-mono);
+  font-size: 1em;
+}
+
+.markdown pre {
+  overflow-x: auto;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+  line-height: var(--line-height-small);
+  white-space: pre;
+  overflow-wrap: normal;
+}
+
+.markdown pre code {
+  font-size: inherit;
+}
+
+.markdown blockquote {
+  padding: 0 var(--space-4);
+  border-left: 2px solid var(--color-text);
+  color: var(--color-text-secondary);
+}
+
+.markdown hr {
+  height: 1px;
+  border: none;
+  background: var(--color-border);
+}
+
+.markdown > * + hr,
+.markdown > hr + * {
+  margin-top: var(--space-8);
+}
+
+.figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.figure figcaption {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--line-height-small);
+}
+
+.image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  background: var(--color-placeholder);
+}
+
+.figure .image {
+  width: 100%;
+}
+
+/* Tables aren't in the design; kept plain, in the same border style as everything else. */
+.tableScroll {
+  overflow-x: auto;
+}
+
+.markdown table {
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  line-height: var(--line-height-small);
+}
+
+.markdown th,
+.markdown td {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.markdown th {
+  font-weight: 600;
+}
+
+.markdown del {
+  color: var(--color-text-secondary);
+}
+
+/* Footnotes (GitHub style): smaller, below a rule. */
+.markdown :global(.footnotes) {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--line-height-small);
+}
+
+.markdown sup a {
+  text-decoration: none;
+}

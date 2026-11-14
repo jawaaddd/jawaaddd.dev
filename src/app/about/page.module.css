@@ -1,0 +1,62 @@
+/* Mobile first: the portrait on top, full width. From 1024px: portrait beside the text. */
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding-block: var(--space-12);
+}
+
+.portrait {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--color-placeholder);
+}
+
+.portrait img {
+  object-fit: cover;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 643px;
+}
+
+.heading {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: var(--line-height-h3);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+}
+
+@media (min-width: 640px) {
+  .about {
+    padding-block: var(--space-16);
+  }
+
+  .portrait {
+    width: 357px;
+  }
+
+  .heading {
+    font-size: var(--text-2xl);
+    line-height: var(--line-height-h2);
+  }
+}
+
+@media (min-width: 1024px) {
+  .about {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-12);
+  }
+}

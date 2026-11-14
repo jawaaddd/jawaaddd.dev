@@ -101,6 +101,16 @@ export function getPublishedPost(slug: string): Post | null {
   return row ? { ...toFeedPost(row), body: row.body_md } : null;
 }
 
+/** The images uploaded with a Markdown post, keyed by the name the Markdown refers to them by. */
+export function getPostImages(postId: number): Map<string, string> {
+  const rows = getDb()
+    .prepare<[number], { filename: string; path: string }>(
+      "SELECT filename, path FROM post_images WHERE post_id = ?",
+    )
+    .all(postId);
+  return new Map(rows.map((row) => [row.filename, row.path]));
+}
+
 export const isNote = (type: PostType) => type === "til" || type === "thought" || type === "idea";
 
 /** Public URL for a file stored under uploads/ on the data volume. */
