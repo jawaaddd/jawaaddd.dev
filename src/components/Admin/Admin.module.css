@@ -1,0 +1,107 @@
+/* ---------- Admin navbar: not pinned, no footer (Admin frames in Figma) ---------- */
+
+.nav {
+  padding-block: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.navInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  white-space: nowrap;
+}
+
+.name {
+  font-size: var(--text-base);
+  font-weight: 600;
+  line-height: var(--line-height-body);
+}
+
+.label {
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  line-height: var(--line-height-tiny);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+/* ---------- Page ---------- */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding-block: var(--space-8);
+}
+
+.heading {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: var(--line-height-h3);
+}
+
+/* Title on the left, the page's action on the right. */
+.titleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.viewPost {
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: var(--line-height-small);
+}
+
+.viewPost:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- Sign in ---------- */
+
+.signIn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  width: min(357px, 100%);
+}
+
+.signInHeader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.intro {
+  color: var(--color-text-secondary);
+}
+
+.signInForm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+}
+
+@media (min-width: 640px) {
+  .page {
+    padding-block: var(--space-12);
+  }
+
+  .heading {
+    font-size: var(--text-2xl);
+    line-height: var(--line-height-h2);
+  }
+}

@@ -1,0 +1,224 @@
+.search {
+  max-width: 453px;
+}
+
+/* Mobile first: each post is a small card (Type · Status / text / Date · Actions). */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.table tr {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "type status"
+    "text text"
+    "date actions";
+  gap: var(--space-1) var(--space-4);
+  align-items: center;
+  padding-block: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table th {
+  text-align: start;
+}
+
+.type {
+  grid-area: type;
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  line-height: var(--line-height-tiny);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.text {
+  grid-area: text;
+  overflow: hidden;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.date {
+  grid-area: date;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--line-height-small);
+}
+
+.status {
+  grid-area: status;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: var(--line-height-small);
+}
+
+.status[data-draft] {
+  color: var(--color-text-secondary);
+}
+
+.actions {
+  grid-area: actions;
+  display: flex;
+  gap: var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: var(--line-height-small);
+  white-space: nowrap;
+}
+
+/* The links are small; padding gives them a 44px tap target without moving anything. */
+.edit,
+.delete {
+  margin: calc(-1 * var(--space-3)) calc(-1 * var(--space-2));
+  padding: var(--space-3) var(--space-2);
+}
+
+.edit {
+  color: var(--color-accent);
+}
+
+.delete {
+  color: var(--color-error);
+}
+
+.edit:hover,
+.delete:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.empty {
+  color: var(--color-text-secondary);
+}
+
+/* From 640px: the table in Figma's Admin / Posts frame, 24px between columns. */
+@media (min-width: 640px) {
+  .table {
+    table-layout: fixed;
+  }
+
+  .table thead {
+    position: static;
+    width: auto;
+    height: auto;
+    clip-path: none;
+  }
+
+  .table tr {
+    display: table-row;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .table th,
+  .table td {
+    padding: var(--space-4) var(--space-6) var(--space-4) 0;
+    vertical-align: middle;
+  }
+
+  .table td:last-child,
+  .table th:last-child {
+    padding-right: 0;
+  }
+
+  .table th {
+    padding-block: var(--space-2);
+    color: var(--color-text-secondary);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    line-height: var(--line-height-tiny);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .table td.actions {
+    display: table-cell;
+  }
+
+  .actions > * + * {
+    margin-left: var(--space-4);
+  }
+
+  /* Column widths plus the 24px gap after each. */
+  .type {
+    width: calc(96px + var(--space-6));
+  }
+
+  .date {
+    width: calc(128px + var(--space-6));
+  }
+
+  .status {
+    width: calc(96px + var(--space-6));
+  }
+
+  .actions {
+    width: 112px;
+  }
+}
+
+/* ---------- Delete confirmation (not drawn in Figma; built from the modal's parts) ---------- */
+
+.dialog {
+  width: calc(100% - 2 * var(--page-gutter));
+  max-width: 440px;
+  margin: auto;
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.dialog::backdrop {
+  background: var(--scrim);
+}
+
+.dialogTitle {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: var(--line-height-h3);
+}
+
+.dialogText {
+  margin-top: var(--space-2);
+  color: var(--color-text-secondary);
+  overflow-wrap: break-word;
+}
+
+.dialogActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+/* Destructive, so red rather than the accent. */
+.confirmDelete {
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-error);
+  color: var(--color-bg);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: var(--line-height-small);
+}
+
+.confirmDelete:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.confirmDelete[aria-disabled="true"] {
+  cursor: progress;
+}

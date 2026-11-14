@@ -1,17 +1,19 @@
-import { Markdown } from "@/components/Markdown/Markdown";
 import { UploadedImage } from "@/components/UploadedImage/UploadedImage";
 import { formatDate } from "@/lib/dates";
-import { getPostImages, isNote, TYPE_LABELS, type Post } from "@/lib/posts";
-import { ModalShell, type ModalVariant } from "./ModalShell";
-import styles from "./PostModal.module.css";
+import { resolveImage } from "@/lib/markdown";
+import { getPostImages, TYPE_LABELS, type Post } from "@/lib/posts";
+import { ModalShell } from "./ModalShell";
+import { modalVariant, PostBody } from "./PostBody";
 
 type Props = { post: Post; dismiss: "back" | "home" };
+
+const MARKDOWN_IMAGE_SIZES = "(min-width: 640px) 643px, 100vw";
 
 export async function PostModal({ post, dismiss }: Props) {
   const label = TYPE_LABELS[post.type];
   const date = formatDate(post.publishedAt);
-  const variant: ModalVariant =
-    post.type === "photo" ? "photo" : isNote(post.type) ? "note" : "wide";
+  const variant = modalVariant(post.type);
+  const images = variant === "wide" ? getPostImages(post.id) : new Map<string, string>();
 
   return (
     <ModalShell
@@ -23,35 +25,23 @@ export async function PostModal({ post, dismiss }: Props) {
       ariaLabel={`${label}, ${date}`}
       sharePath={`/post/${post.slug}`}
     >
-      {variant === "note" && <p className={styles.noteText}>{post.body}</p>}
-
-      {variant === "photo" && (
-        <figure className={styles.figure}>
-          {post.imagePath && (
+      <PostBody
+        post={post}
+        renderImage={(path, alt, sizes, className) => (
+          <UploadedImage path={path} alt={alt} sizes={sizes} className={className} />
+        )}
+        renderMarkdownImage={(src, alt, className) => {
+          const path = resolveImage(src, images);
+          return path ? (
             <UploadedImage
-              path={post.imagePath}
-              alt={post.caption ?? ""}
-              sizes="(min-width: 640px) 878px, 100vw"
-              className={styles.image}
+              path={path}
+              alt={alt}
+              sizes={MARKDOWN_IMAGE_SIZES}
+              className={className}
             />
-          )}
-          {post.caption && <figcaption className={styles.caption}>{post.caption}</figcaption>}
-        </figure>
-      )}
-
-      {variant === "wide" && (
-        <>
-          {post.type === "project" && post.imagePath && (
-            <UploadedImage
-              path={post.imagePath}
-              alt=""
-              sizes="(min-width: 640px) 643px, 100vw"
-              className={styles.image}
-            />
-          )}
-          {post.body && <Markdown source={post.body} images={getPostImages(post.id)} />}
-        </>
-      )}
+          ) : null;
+        }}
+      />
     </ModalShell>
   );
 }

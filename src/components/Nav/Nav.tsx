@@ -22,7 +22,7 @@ export function Nav() {
           </ul>
         </nav>
 
-        <MobileMenu />
+        <MobileMenu links={navLinks} label="Main" />
       </div>
     </header>
   );

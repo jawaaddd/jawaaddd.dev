@@ -96,3 +96,9 @@
   font-size: var(--text-sm);
   line-height: var(--line-height-small);
 }
+
+/* A button row (Sign out) lines up with the link rows. */
+button.row {
+  width: 100%;
+  text-align: start;
+}

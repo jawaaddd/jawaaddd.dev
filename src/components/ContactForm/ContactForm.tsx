@@ -9,6 +9,7 @@ import {
   type ContactErrors,
   type ContactFields,
 } from "@/lib/contact";
+import form from "@/components/Form/Form.module.css";
 import { sendContactMessage } from "./actions";
 import styles from "./ContactForm.module.css";
 
@@ -71,7 +72,7 @@ export function ContactForm() {
     maxLength: LIMITS[name],
     "aria-invalid": errors[name] ? true : undefined,
     "aria-describedby": errors[name] ? `${id}-${name}-error` : undefined,
-    className: styles.input,
+    className: form.input,
     onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setValues((values) => ({ ...values, [name]: event.target.value }));
       // A fixed field stops showing its error right away.
@@ -81,23 +82,23 @@ export function ContactForm() {
 
   const error = (name: keyof ContactFields) =>
     errors[name] && (
-      <p id={`${id}-${name}-error`} className={styles.error}>
+      <p id={`${id}-${name}-error`} className={form.error}>
         {errors[name]}
       </p>
     );
 
   return (
     <form ref={formRef} className={styles.form} onSubmit={submit} noValidate>
-      <div className={styles.field}>
-        <label htmlFor={`${id}-name`} className={styles.label}>
+      <div className={form.field}>
+        <label htmlFor={`${id}-name`} className={form.label}>
           Name
         </label>
         <input type="text" autoComplete="name" placeholder="Your name" {...field("name")} />
         {error("name")}
       </div>
 
-      <div className={styles.field}>
-        <label htmlFor={`${id}-email`} className={styles.label}>
+      <div className={form.field}>
+        <label htmlFor={`${id}-email`} className={form.label}>
           Email
         </label>
         <input
@@ -110,11 +111,15 @@ export function ContactForm() {
         {error("email")}
       </div>
 
-      <div className={styles.field}>
-        <label htmlFor={`${id}-message`} className={styles.label}>
+      <div className={form.field}>
+        <label htmlFor={`${id}-message`} className={form.label}>
           Message
         </label>
-        <textarea placeholder="What is on your mind?" {...field("message")} />
+        <textarea
+          placeholder="What is on your mind?"
+          {...field("message")}
+          className={`${form.input} ${styles.message}`}
+        />
         {error("message")}
       </div>
 
@@ -125,12 +130,12 @@ export function ContactForm() {
       </div>
 
       {formError && (
-        <p className={styles.error} role="alert">
+        <p className={form.error} role="alert">
           {formError}
         </p>
       )}
 
-      <button type="submit" className={styles.send} aria-disabled={pending}>
+      <button type="submit" className={form.primary} aria-disabled={pending}>
         {pending ? "Sending…" : "Send message"}
       </button>
     </form>

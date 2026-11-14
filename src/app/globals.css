@@ -38,14 +38,18 @@ html {
 
 body {
   min-height: 100dvh;
-  padding-top: var(--nav-height);
-  padding-bottom: var(--footer-height);
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: var(--line-height-body);
   -webkit-font-smoothing: antialiased;
+}
+
+/* Room for the public site's pinned navbar and footer. */
+.site {
+  padding-top: var(--nav-height);
+  padding-bottom: var(--footer-height);
 }
 
 /* Any open modal dialog (menu sheet, post modal) locks the page behind it. */

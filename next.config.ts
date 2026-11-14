@@ -5,6 +5,12 @@ const nextConfig: NextConfig = {
   output: "standalone",
   cacheComponents: true,
   partialPrefetching: true,
+  experimental: {
+    serverActions: {
+      // The composer uploads photos (up to 15 MB each, see POST_LIMITS) through a server action.
+      bodySizeLimit: "50mb",
+    },
+  },
   images: {
     // Uploaded images are served from the data volume by app/media.
     localPatterns: [{ pathname: "/media/**", search: "" }],

@@ -5,7 +5,7 @@ import { useId, useLayoutEffect, useRef } from "react";
 import { useToast } from "@/components/Toast/Toast";
 import styles from "./PostModal.module.css";
 
-export type ModalVariant = "wide" | "note" | "photo";
+import type { ModalVariant } from "./PostBody";
 
 type Props = {
   variant: ModalVariant;

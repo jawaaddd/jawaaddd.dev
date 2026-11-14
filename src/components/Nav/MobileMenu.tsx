@@ -1,13 +1,21 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { navLinks } from "@/lib/site";
+import type { SiteLink } from "@/lib/site";
 import { SiteLinkAnchor } from "@/components/SiteLinkAnchor/SiteLinkAnchor";
 import styles from "./MobileMenu.module.css";
 
 const DESKTOP_QUERY = "(min-width: 640px)";
 
-export function MobileMenu() {
+type Props = {
+  links: SiteLink[];
+  /** Names the menu's navigation landmark. */
+  label: string;
+  /** A last row that runs a server action instead of linking (Sign out). */
+  action?: { label: string; run: () => Promise<void> };
+};
+
+export function MobileMenu({ links, label, action }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const close = () => dialogRef.current?.close();
@@ -47,9 +55,9 @@ export function MobileMenu() {
           </button>
         </div>
 
-        <nav aria-label="Main">
+        <nav aria-label={label}>
           <ul>
-            {navLinks.map((link) => (
+            {links.map((link) => (
               <li key={link.href}>
                 <SiteLinkAnchor link={link} className={styles.row} onClick={close}>
                   <span className={styles.rowLabel}>{link.label}</span>
@@ -57,6 +65,15 @@ export function MobileMenu() {
                 </SiteLinkAnchor>
               </li>
             ))}
+            {action && (
+              <li>
+                <form action={action.run}>
+                  <button type="submit" className={styles.row}>
+                    <span className={styles.rowLabel}>{action.label}</span>
+                  </button>
+                </form>
+              </li>
+            )}
           </ul>
         </nav>
       </dialog>
