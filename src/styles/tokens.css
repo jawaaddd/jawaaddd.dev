@@ -1,0 +1,49 @@
+/*
+ * Design tokens. Every value mirrors a Figma variable in "Portfolio Redo"
+ * one to one. Component CSS reads these; it never hard-codes values.
+ */
+:root {
+  /* color */
+  --color-accent: #6b7b2c;
+  --color-text: #18181b;
+  --color-text-secondary: #52525b;
+  --color-border: #e4e4e7;
+  --color-border-input: #71717a;
+  --color-placeholder: #e4e4e7;
+  --color-surface: #f4f4f5;
+  --color-bg: #ffffff;
+  --color-error: #b91c1c;
+
+  /* spacing */
+  --space-1: 0.25rem; /* 4 */
+  --space-2: 0.5rem; /* 8 */
+  --space-3: 0.75rem; /* 12 */
+  --space-4: 1rem; /* 16 */
+  --space-6: 1.5rem; /* 24 */
+  --space-8: 2rem; /* 32 */
+  --space-12: 3rem; /* 48 */
+  --space-16: 4rem; /* 64 */
+  --space-24: 6rem; /* 96 */
+
+  /* type: size / line height */
+  --text-4xl: 3rem;
+  --line-height-display: 3.5rem; /* Display 48/56 */
+  --text-3xl: 2.5rem;
+  --line-height-h1: 3rem; /* H1 40/48 */
+  --text-2xl: 2rem;
+  --line-height-h2: 2.5rem; /* H2 32/40 */
+  --text-xl: 1.5rem;
+  --line-height-h3: 2rem; /* H3 24/32 */
+  --text-lg: 1.25rem;
+  --line-height-h4: 1.75rem; /* H4 20/28 */
+  --text-base: 1rem;
+  --line-height-body: 1.5rem; /* Body 16/24 */
+  --text-sm: 0.875rem;
+  --line-height-small: 1.25rem; /* Small 14/20 */
+  --text-xs: 0.75rem;
+  --line-height-tiny: 1rem; /* Tiny 12/16 */
+
+  /* next/font self-hosts Geist under generated family names, exposed as these variables. */
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}

@@ -1,0 +1,37 @@
+/* Reset the browser's popover defaults; the region is an invisible full-width strip. */
+.region {
+  position: fixed;
+  inset: auto 0 calc(var(--footer-height) + var(--space-6));
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0 var(--space-4);
+  border: 0;
+  background: transparent;
+  overflow: visible;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.region:not(:popover-open) {
+  display: none;
+}
+
+.toast {
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: var(--line-height-small);
+  text-align: center;
+  animation: fade-in 150ms ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-2));
+  }
+}

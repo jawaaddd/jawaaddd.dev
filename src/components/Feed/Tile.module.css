@@ -1,0 +1,207 @@
+/*
+ * Each tile is a size container, so text clamping reacts to the tile's real
+ * height (it varies with the column count and the viewport).
+ */
+.tile {
+  container: tile / size;
+  position: relative;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  overflow-wrap: break-word;
+}
+
+.tile:hover,
+.tile:focus-visible {
+  border-color: var(--color-accent);
+}
+
+.label {
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  line-height: var(--line-height-tiny);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 0;
+}
+
+.date {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--line-height-small);
+}
+
+/* ---------- Wide (blogpost, project) ---------- */
+
+.wide {
+  align-items: stretch;
+}
+
+.body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-6);
+}
+
+.title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: var(--line-height-h3);
+}
+
+.excerpt {
+  display: none;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  color: var(--color-text-secondary);
+}
+
+/* Room for a two-line title and a two-line excerpt (content box; this tile has no padding). */
+@container tile (min-height: 220px) {
+  .excerpt {
+    display: -webkit-box;
+  }
+}
+
+.projectImage {
+  display: none;
+  position: relative;
+  flex: 0 0 39%; /* 214 of 548 in the desktop frame */
+  background: var(--color-placeholder);
+}
+
+.projectImage img {
+  object-fit: cover;
+}
+
+/* ---------- Note (TIL, thought, idea) ---------- */
+
+.note {
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-6);
+}
+
+/*
+ * Lines that fit. Container queries measure the content box (inside the
+ * padding), and n lines need 16 label + 8 gap + 20 date + 24n = 44 + 24n.
+ */
+.noteText {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: var(--text-sm);
+  line-height: var(--line-height-body);
+}
+
+@container tile (min-height: 116px) {
+  .noteText {
+    -webkit-line-clamp: 3;
+  }
+}
+@container tile (min-height: 140px) {
+  .noteText {
+    -webkit-line-clamp: 4;
+  }
+}
+@container tile (min-height: 164px) {
+  .noteText {
+    -webkit-line-clamp: 5;
+  }
+}
+@container tile (min-height: 188px) {
+  .noteText {
+    -webkit-line-clamp: 6;
+  }
+}
+@container tile (min-height: 212px) {
+  .noteText {
+    -webkit-line-clamp: 7;
+  }
+}
+
+/* ---------- Photo ---------- */
+
+.photo {
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-4);
+  background: var(--color-placeholder);
+  border-color: transparent;
+}
+
+/* Fades the photo toward white behind the label and caption so the dark text stays legible. */
+.photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 0.8),
+    rgb(255 255 255 / 0) 30%,
+    rgb(255 255 255 / 0) 55%,
+    rgb(255 255 255 / 0.9)
+  );
+}
+
+.photo:hover,
+.photo:focus-visible {
+  border-color: var(--color-accent);
+}
+
+.photoImage {
+  object-fit: cover;
+}
+
+.photo .label,
+.meta {
+  position: relative;
+  z-index: 2;
+}
+
+.meta {
+  font-size: var(--text-sm);
+  line-height: var(--line-height-small);
+}
+
+.caption {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-weight: 500;
+}
+
+.photoDate {
+  color: var(--color-text-secondary);
+}
+
+@media (min-width: 640px) {
+  .projectImage {
+    display: block;
+  }
+
+  .noteText {
+    font-size: var(--text-base);
+  }
+}

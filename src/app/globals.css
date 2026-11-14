@@ -1,0 +1,127 @@
+@import "../styles/tokens.css";
+
+/*
+ * Layout constants. These are not Figma variables; they are derived from the
+ * frames (bar heights) or are page-level layout choices.
+ */
+:root {
+  --container-max: 1120px;
+  --page-gutter: var(--space-4);
+  --nav-height: 73px; /* mobile nav frame */
+  --footer-height: 53px;
+  --tracking-label: 0.06em; /* 0.72px on Tiny 12 type labels */
+  --scrim: rgb(0 0 0 / 0.4);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --page-gutter: var(--space-6);
+    --nav-height: 77px; /* desktop nav frame */
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scrollbar-gutter: stable;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  padding-top: var(--nav-height);
+  padding-bottom: var(--footer-height);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--line-height-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Any open modal dialog (menu sheet, post modal) locks the page behind it. */
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Centered 1120px column used by every page section. */
+.container {
+  width: min(var(--container-max), 100% - 2 * var(--page-gutter));
+  margin-inline: auto;
+}
+
+/* Accent text link ("More about me →", "Older posts →"). */
+.text-link {
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: var(--line-height-small);
+}
+
+.text-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,38 @@
+/* The grid's parent is the query container, so rows can be sized from the grid's own width. */
+.gridArea {
+  container-type: inline-size;
+}
+
+.grid {
+  --cols: 2;
+  --gap: var(--space-4);
+
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  /* Square grid units: a row is as tall as a column is wide. */
+  grid-auto-rows: calc((100cqi - (var(--cols) - 1) * var(--gap)) / var(--cols));
+  /* Fill holes left by wide tiles. Document order (and so keyboard order) stays by date. */
+  grid-auto-flow: row dense;
+  gap: var(--gap);
+}
+
+.wide {
+  grid-column: span 2;
+}
+
+.empty {
+  color: var(--color-text-secondary);
+}
+
+@media (min-width: 640px) {
+  .grid {
+    --cols: 3;
+    --gap: var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    --cols: 4;
+  }
+}
