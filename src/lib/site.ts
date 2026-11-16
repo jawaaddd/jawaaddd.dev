@@ -1,7 +1,7 @@
 export const site = {
   name: "Tanvir Jawad",
   description:
-    "My name is Jawad. I like to tinker with technology, think about things, and toy with ideas.",
+    "My name is Jawad. I like to tinker with technology and think about things.",
   email: "tanvirja@buffalo.edu",
 };
 

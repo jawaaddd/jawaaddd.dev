@@ -5,7 +5,7 @@ import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Send me a message.",
+  description: "Hit me up!",
 };
 
 export default function ContactPage() {

@@ -9,6 +9,7 @@ import styles from "./Admin.module.css";
 const adminLinks: SiteLink[] = [
   { label: "Posts", href: "/admin/posts" },
   { label: "New post", href: "/admin/posts/new" },
+  { label: "Backups", href: "/admin/backups" },
   { label: "View site", href: "/" },
 ];
 

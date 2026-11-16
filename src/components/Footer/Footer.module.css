@@ -20,6 +20,14 @@
   white-space: nowrap;
 }
 
+/* Below 380px the copyright and the links don't fit on one line (globals.css raises --footer-height to match). */
+@media (max-width: 379px) {
+  .inner {
+    flex-wrap: wrap;
+    row-gap: var(--space-1);
+  }
+}
+
 .links {
   display: flex;
   gap: var(--space-6);

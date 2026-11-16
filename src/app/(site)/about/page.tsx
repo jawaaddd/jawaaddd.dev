@@ -8,7 +8,7 @@ import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "Who I am, what I study and what I spend my time making.",
+  description: "Who is Jawad?",
 };
 
 const resume = navLinks.find((link) => link.label === "Resume")!;

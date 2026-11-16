@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/auth";
+import { backupBeforeChange } from "@/lib/backup";
 import { publishedAtFor } from "@/lib/dates";
 import {
   createPost,
@@ -133,6 +134,7 @@ export async function savePost(form: FormData): Promise<SaveResult> {
       publishedAt: publishedAtFor(fields.date, existing?.publishedAt),
     };
 
+    await backupBeforeChange();
     let id: number;
     if (existing) {
       id = existing.id;
@@ -161,7 +163,9 @@ export async function savePost(form: FormData): Promise<SaveResult> {
 export async function removePost(id: number): Promise<{ ok: boolean }> {
   await requireAdmin();
   const post = getPostById(id);
-  if (!post || !deletePost(id)) return { ok: false };
+  if (!post) return { ok: false };
+  await backupBeforeChange();
+  if (!deletePost(id)) return { ok: false };
   await removeUploads(
     [post.imagePath, ...post.images.map((image) => image.path)].filter(
       (path): path is string => !!path,

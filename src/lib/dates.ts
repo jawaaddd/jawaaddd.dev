@@ -16,6 +16,15 @@ export function formatDate(iso: string): string {
   return `${get("month")} ${day}${ordinal(day)} ${get("year")}`;
 }
 
+const timeFormat = new Intl.DateTimeFormat("en-US", {
+  timeZone: SITE_TIME_ZONE,
+  hour: "numeric",
+  minute: "2-digit",
+});
+
+/** "2:03 PM" */
+export const formatTime = (iso: string): string => timeFormat.format(new Date(iso));
+
 function ordinal(day: number): string {
   if (day >= 11 && day <= 13) return "th";
   return { 1: "st", 2: "nd", 3: "rd" }[day % 10] ?? "th";

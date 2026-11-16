@@ -38,6 +38,7 @@
   color: var(--color-text-secondary);
   font-size: var(--text-sm);
   line-height: var(--line-height-small);
+  white-space: nowrap;
 }
 
 /* ---------- Wide (blogpost, project) ---------- */
@@ -178,6 +179,7 @@
 
 .photoDate {
   color: var(--color-text-secondary);
+  white-space: nowrap;
 }
 
 @media (min-width: 640px) {
@@ -187,6 +189,25 @@
 
   .noteText {
     font-size: var(--text-base);
+  }
+}
+
+/*
+ * Phones narrower than 380px, where tiles drop below about 165px (the Figma
+ * mobile frame is 390px). Tighter padding keeps dates on one line, and a
+ * smaller title fits two lines in a wide tile: at 320px its 134px content box
+ * holds 16 label + 8 + 2×24 title + 8 + 20 date + 2×16 padding.
+ * The note line clamps above follow the larger content box on their own.
+ */
+@media (max-width: 379px) {
+  .note,
+  .body {
+    padding: var(--space-4);
+  }
+
+  .title {
+    font-size: var(--text-lg);
+    line-height: var(--line-height-body);
   }
 }
 

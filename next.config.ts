@@ -12,8 +12,12 @@ const nextConfig: NextConfig = {
     },
   },
   images: {
-    // Uploaded images are served from the data volume by app/media.
-    localPatterns: [{ pathname: "/media/**", search: "" }],
+    localPatterns: [
+      // Uploaded images, served from the data volume by app/media.
+      { pathname: "/media/**", search: "" },
+      // The About portrait in public/ (src/content/about.ts).
+      { pathname: "/portrait.*", search: "" },
+    ],
   },
 };
 

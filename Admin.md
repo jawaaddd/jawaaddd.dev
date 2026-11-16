@@ -1,6 +1,6 @@
 # Admin guide
 
-How to run, configure and deploy jawaaddd.dev. Items marked **(phase 8–9)** don't exist
+How to run, configure and deploy jawaaddd.dev. Items marked **(phase 9)** don't exist
 yet; this file gets updated as those phases land.
 
 ## Environment variables
@@ -25,11 +25,12 @@ Never commit any of these values.
 
 - **About text and portrait:** `src/content/about.ts`. The text is Markdown and still holds the
   Figma placeholder copy. To add a portrait, drop the photo in `public/` (e.g.
-  `public/portrait.jpg`) and set `portrait` to `{ src: "/portrait.jpg", alt: "…" }`. Any aspect
+  `public/portrait.jpg`; the name must be `portrait.<ext>`) and set `portrait` to `{ src: "/portrait.jpg", alt: "…" }`. Any aspect
   ratio works; it's cropped to a square.
 - **Resume:** save it as `public/resume.pdf`. The navbar and About page link to it.
-- **Favicon:** none yet (browsers log a 404 for `/favicon.ico`). Add `src/app/icon.png` (or
-  `icon.svg`) and Next.js serves it automatically.
+- **Favicon:** done: the accent dot (Figma "Favicon" frame without its dark ring), as `src/app/icon.svg`,
+  `favicon.ico` (16/32/48px) and `apple-icon.png` (180px, on white for iOS home screens).
+  To change it, replace those files; Next.js picks them up automatically.
 - **Home intro:** the sentence above the feed is `site.description` in `src/lib/site.ts`.
 - **Posts:** through the admin panel at `/admin`. Never run `npm run seed` in production:
   it replaces every post (it refuses to run when `NODE_ENV=production`).
@@ -141,11 +142,37 @@ per hour (it resets on each deploy).
 ## Data and backups
 
 - `DATA_DIR/site.db` is the SQLite database (all posts). `DATA_DIR/uploads/` holds images.
-- Backups **(phase 8)**: the database will be copied safely on every publish and monthly,
-  with the latest few kept on the volume and a download button in the admin panel. Images
-  are covered by Railway's volume backups; turn those on in the volume's settings.
-- Don't copy `site.db` with plain file tools while the site is running. Use the backup
-  download once phase 8 is in.
+- Don't copy `site.db` with plain file tools while the site is running; a copy taken mid-write
+  can be broken. Use a backup instead.
+
+### Backups
+
+Copies of the database are saved in `DATA_DIR/backups/`, using SQLite's own backup, so they're
+safe to take while the site is running:
+
+| Kind    | When                                                                     | Kept       |
+| ------- | ------------------------------------------------------------------------ | ---------- |
+| Daily   | Before the first post change (save or delete) of each day, New York time | The last 7 |
+| Monthly | The first daily copy of each month                                       | The last 6 |
+| Manual  | **Back up now** on the admin's Backups page                              | The last 5 |
+
+Days with no changes get no copy, so "the last 7" means the last 7 days you changed something.
+If a backup fails, the error is logged as `[backup] …` and the change still goes ahead.
+
+The admin's **Backups** page (`/admin/backups`) lists them, with a Download link for each.
+Download one now and then to keep a copy off the server.
+
+What they don't cover:
+
+- **Images.** Turn on Railway's volume backups (volume → Backups) for those. Deleting a post,
+  or replacing an image, removes the old image files right away. Restoring a database copy
+  brings back the post's text, but its images only come back from a volume backup.
+- **Losing the volume.** The copies live on the same volume as the database. Railway's volume
+  backups cover this, and so will the automatic Google Drive backups planned in TODO.md.
+
+To restore a copy locally: stop the server, delete `data/site.db`, `data/site.db-wal` and
+`data/site.db-shm`, put the downloaded file in their place named `site.db`, and start the
+server again. The steps for restoring on Railway **(phase 9)** will be added with the deploy.
 
 ## Troubleshooting
 
