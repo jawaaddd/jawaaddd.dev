@@ -17,8 +17,9 @@ export async function signIn(_previous: SignInState, formData: FormData): Promis
   const password = formData.get("password");
   if (typeof password !== "string" || !password) return { error: "Enter your password." };
 
-  // Railway's proxy puts the visitor's address first in X-Forwarded-For.
-  const ip = (await headers()).get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
+  // Railway's proxy sets X-Real-IP to the visitor's address. X-Forwarded-For can carry
+  // whatever the visitor sent, which would let them dodge the limit.
+  const ip = (await headers()).get("x-real-ip") || "unknown";
   if (!limiter.attempt(ip)) return { error: "Too many attempts. Try again in 15 minutes." };
 
   if (!passwordMatches(password)) return { error: "That password isn't right." };

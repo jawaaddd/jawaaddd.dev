@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Railway runs a plain Node server; standalone keeps the image small.
   output: "standalone",
+  // The tracer can't tell that DATA_DIR paths are runtime-only, so it copied the local
+  // database (and the files next to the backups route) into the build.
+  outputFileTracingExcludes: { "/*": ["./data/**/*", "./src/**/*"] },
   cacheComponents: true,
   partialPrefetching: true,
   experimental: {

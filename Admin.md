@@ -70,7 +70,9 @@ Full steps land in phase 9; the shape is:
 
 1. Create a service from the GitHub repo.
 2. Add a **volume** and mount it at `/data`. Set `DATA_DIR=/data` and `HOSTNAME=0.0.0.0`.
-3. Build command `npm run build`, start command `npm start` (both already in `package.json`).
+3. Build and deploy settings come from `railway.json` in the repo (build `npm run build`,
+   start `npm start`, health check on `/`, restart on failure), so leave them unset in the
+   dashboard. Node is pinned by `engines` in `package.json`.
 4. Add the contact and admin variables above.
 5. Add the custom domain `jawaaddd.dev` in Railway and create the DNS records it shows you at
    your registrar.
@@ -82,6 +84,8 @@ Things to know:
 - Only the volume persists. Anything written elsewhere on the server is lost on the next
   deploy, so all posts and uploads must live under `DATA_DIR`.
 - The database is only read at request time, so builds don't need the volume.
+- The sign-in and contact rate limits identify visitors by `X-Real-IP`, which Railway's proxy
+  sets. Behind a different proxy, check that it sets that header too.
 
 ## The admin panel
 

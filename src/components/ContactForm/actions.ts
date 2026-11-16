@@ -32,8 +32,9 @@ export async function sendContactMessage(input: {
   });
   if (hasErrors(errors)) return { status: "invalid", errors };
 
-  // Railway's proxy puts the visitor's address first in X-Forwarded-For.
-  const ip = (await headers()).get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
+  // Railway's proxy sets X-Real-IP to the visitor's address. X-Forwarded-For can carry
+  // whatever the visitor sent, which would let them dodge the limit.
+  const ip = (await headers()).get("x-real-ip") || "unknown";
   if (!limiter.attempt(ip)) {
     return {
       status: "failed",
