@@ -6,7 +6,7 @@ What's up! I'm glad you found my website and are reading this page to learn a bi
 
 As I populate this website with my thoughts, writing pieces, and projects, you'll see what I mean.
 
-I was born and raised in Dhaka, Bangladesh until about the age of twelce, when my family and I moved to NYC. I started learning how to code on Khan Academy's website using their course on the Processing.js library. Soon after that, I learned Python, learned about libraries and APIs, started doing hackathons, and, well, the rest is history.
+I was born and raised in Dhaka, Bangladesh until about the age of twelve, when my family and I moved to NYC. I started learning how to code on Khan Academy's website using their course on the Processing.js library. Soon after that, I learned Python, learned about libraries and APIs, started doing hackathons, and, well, the rest is history.
 
 But my interests have evolved since then. They've started expanding into the liberal arts and into more math like I mentioned in the first paragraph.
 
