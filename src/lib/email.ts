@@ -4,13 +4,7 @@ type Email = { subject: string; text: string; replyTo: string };
 
 /**
  * Sends an email to Jawad through Resend. Without RESEND_API_KEY (local
- * development, or before the key is set up) it logs the email instead.
- *
- * Environment:
- * - RESEND_API_KEY: the Resend API key.
- * - CONTACT_TO_EMAIL: where messages go (defaults to the site email).
- * - CONTACT_FROM_EMAIL: the sender, on a domain verified in Resend,
- *   e.g. "jawaaddd.dev <contact@jawaaddd.dev>".
+ * development) it logs the email instead. The variables are described in Admin.md.
  */
 export async function sendEmail({ subject, text, replyTo }: Email): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;

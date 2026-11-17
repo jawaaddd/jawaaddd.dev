@@ -14,7 +14,7 @@ export default function ContactPage() {
       <div className={styles.column}>
         <header className={styles.header}>
           <h1 className={styles.heading}>Contact</h1>
-          <p className={styles.intro}>Send a message and it goes straight to my inbox.</p>
+          <p className={styles.intro}>Send me a message.</p>
         </header>
 
         <ContactForm />

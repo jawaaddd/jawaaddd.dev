@@ -93,7 +93,7 @@ export function ContactForm() {
         <label htmlFor={`${id}-name`} className={form.label}>
           Name
         </label>
-        <input type="text" autoComplete="name" placeholder="Your name" {...field("name")} />
+        <input type="text" autoComplete="name" placeholder="I should call you..." {...field("name")} />
         {error("name")}
       </div>
 
@@ -116,7 +116,7 @@ export function ContactForm() {
           Message
         </label>
         <textarea
-          placeholder="What is on your mind?"
+          placeholder="What's up?"
           {...field("message")}
           className={`${form.input} ${styles.message}`}
         />

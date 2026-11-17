@@ -3,14 +3,14 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Railway runs a plain Node server; standalone keeps the image small.
   output: "standalone",
-  // The tracer can't tell that DATA_DIR paths are runtime-only, so it copied the local
+  // The tracer can't tell that DATA_DIR paths are runtime-only, and would copy the local
   // database (and the files next to the backups route) into the build.
   outputFileTracingExcludes: { "/*": ["./data/**/*", "./src/**/*"] },
   cacheComponents: true,
   partialPrefetching: true,
   experimental: {
     serverActions: {
-      // The composer uploads photos (up to 15 MB each, see POST_LIMITS) through a server action.
+      // The composer uploads images (up to 15 MB each, see POST_LIMITS) through a server action.
       bodySizeLimit: "50mb",
     },
   },

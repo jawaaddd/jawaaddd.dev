@@ -226,7 +226,7 @@ const posts: Seed[] = [
     caption: "Light photo, dark text",
     days: 17,
   },
-  // Page two, for "Older posts" in phase 4.
+  // Page two, for "Older posts".
   {
     type: "thought",
     slug: "sample-thought-2",
