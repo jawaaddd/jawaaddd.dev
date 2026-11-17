@@ -1,7 +1,6 @@
 # Admin guide
 
-How to run, configure and deploy jawaaddd.dev. Items marked **(phase 9)** don't exist
-yet; this file gets updated as those phases land.
+How to run, configure and deploy jawaaddd.dev.
 
 ## Environment variables
 
@@ -11,33 +10,31 @@ repo root (git-ignored; Next.js loads it automatically in `npm run dev`).
 | Variable              | Needed for    | Value                                                                                                                                         |
 | --------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | `DATA_DIR`            | Everything    | Folder holding `site.db` and `uploads/`. On Railway: the volume's mount path, e.g. `/data`. Defaults to `./data` locally.                     |
-| `HOSTNAME`            | Railway       | `0.0.0.0`. The standalone server binds to `HOSTNAME`, and containers set it to their own name, which can make the app unreachable.            |
+| `HOSTNAME`            | Railway       | `0.0.0.0`. The standalone server binds to `HOSTNAME`, and containers set it to their own name, which makes the site return 502.               |
 | `PORT`                | Railway       | Set by Railway automatically; don't override. Defaults to 3000 locally.                                                                       |
 | `RESEND_API_KEY`      | Contact form  | API key from resend.com → API Keys. Without it, messages are logged to the server output instead of sent.                                     |
-| `CONTACT_FROM_EMAIL`  | Contact form  | Sender shown on the email, on a domain verified in Resend, e.g. `jawaaddd.dev <contact@jawaaddd.dev>`. Required once `RESEND_API_KEY` is set. |
+| `CONTACT_FROM_EMAIL`  | Contact form  | Sender shown on the email, on a domain verified in Resend, e.g. `Contact Form <contact@jawaaddd.dev>`. Required once `RESEND_API_KEY` is set. |
 | `CONTACT_TO_EMAIL`    | Contact form  | Where messages are delivered. Optional; defaults to `tanvirja@buffalo.edu`.                                                                   |
 | `ADMIN_PASSWORD_HASH` | Admin sign-in | A hash of your admin password (never the password itself). Generate it with `npm run hash-password` (see below).                              |
 | `SESSION_SECRET`      | Admin sign-in | A random string of at least 32 characters that signs the session cookie. Generate with `openssl rand -base64 48`. Changing it signs you out.  |
 
 Never commit any of these values.
 
-## Before launch: content to fill in
+## Site content
 
-- **About text and portrait:** `src/content/about.ts`. The text is Markdown and still holds the
-  Figma placeholder copy. To add a portrait, drop the photo in `public/` (e.g.
-  `public/portrait.jpg`; the name must be `portrait.<ext>`) and set `portrait` to `{ src: "/portrait.jpg", alt: "…" }`. Any aspect
-  ratio works; it's cropped to a square.
-- **Resume:** save it as `public/resume.pdf`. The navbar and About page link to it.
-- **Favicon:** done: the accent dot (Figma "Favicon" frame without its dark ring), as `src/app/icon.svg`,
-  `favicon.ico` (16/32/48px) and `apple-icon.png` (180px, on white for iOS home screens).
-  To change it, replace those files; Next.js picks them up automatically.
+- **About text and portrait:** `src/content/about.ts`. The text is Markdown. The portrait is
+  `public/portrait.jpg`; a replacement must also be named `portrait.<ext>` (update `src` to
+  match). Any aspect ratio works; it's cropped to a square.
+- **Resume:** `public/resume.pdf`. The navbar and About page link to it.
+- **Favicon:** `src/app/icon.svg`, `favicon.ico` (16/32/48px) and `apple-icon.png` (180px, on
+  white for iOS home screens). Replace those files to change it.
 - **Home intro:** the sentence above the feed is `site.description` in `src/lib/site.ts`.
 - **Posts:** through the admin panel at `/admin`. Never run `npm run seed` in production:
   it replaces every post (it refuses to run when `NODE_ENV=production`).
 
 ## Running locally
 
-Needs Node 24 or newer.
+Needs Node 26 (pinned by `engines` in `package.json`).
 
 ```sh
 npm install
@@ -66,16 +63,23 @@ npm run build
 
 ## Deploying to Railway
 
-Full steps land in phase 9; the shape is:
+Railway builds and deploys every push to `main` on GitHub. Settings come from `railway.json`
+(build `npm run build`, start `npm start`, health check on `/`, restart on failure), so leave
+them unset in the dashboard.
 
-1. Create a service from the GitHub repo.
-2. Add a **volume** and mount it at `/data`. Set `DATA_DIR=/data` and `HOSTNAME=0.0.0.0`.
-3. Build and deploy settings come from `railway.json` in the repo (build `npm run build`,
-   start `npm start`, health check on `/`, restart on failure), so leave them unset in the
-   dashboard. Node is pinned by `engines` in `package.json`.
-4. Add the contact and admin variables above.
-5. Add the custom domain `jawaaddd.dev` in Railway and create the DNS records it shows you at
-   your registrar.
+Setting it up from scratch:
+
+1. Create a project from the GitHub repo.
+2. Attach a **volume** mounted at `/data`, and turn on its scheduled backups (volume →
+   Backups).
+3. Set the variables above: `DATA_DIR=/data`, `HOSTNAME=0.0.0.0`, the admin pair (generated
+   fresh for production, not reused from `.env.local`) and the contact ones.
+4. Add the custom domain `jawaaddd.dev` (service → Settings → Networking), on the port the
+   deploy log shows the server listening on (8080). In Cloudflare DNS, add the CNAME and TXT
+   records Railway shows, with the proxy **off** (gray cloud). The TXT record is required;
+   without it Railway returns 404.
+5. For `www`: in Cloudflare, add a proxied (orange cloud) `CNAME www → jawaaddd.dev` and a
+   Redirect Rule from the "Redirect from WWW to root" template. `www` isn't added in Railway.
 
 Things to know:
 
@@ -85,7 +89,17 @@ Things to know:
   deploy, so all posts and uploads must live under `DATA_DIR`.
 - The database is only read at request time, so builds don't need the volume.
 - The sign-in and contact rate limits identify visitors by `X-Real-IP`, which Railway's proxy
-  sets. Behind a different proxy, check that it sets that header too.
+  sets. With Cloudflare's proxy on (orange cloud) for `jawaaddd.dev`, that header would hold
+  Cloudflare's address instead of the visitor's, so keep it gray.
+- In the service's shell (Railway's SSH console), `node` and `npm` aren't found at first. Node
+  is installed by mise under `/mise/installs`, which the site has on its `PATH` but a new
+  shell doesn't. Activate it for the session with:
+
+  ```sh
+  eval "$(mise activate bash)"
+  ```
+
+  or run a single command with `mise exec -- node -v`.
 
 ## The admin panel
 
@@ -132,7 +146,7 @@ checked and re-encoded on upload, which removes camera metadata such as GPS loca
 ## Setting up Resend (contact form)
 
 1. Create an account at resend.com and add `jawaaddd.dev` under **Domains**.
-2. Add the DNS records Resend shows (SPF/DKIM) at your registrar and wait for it to verify.
+2. Add the DNS records Resend shows in Cloudflare (proxy off) and wait for it to verify.
 3. Create an API key with "Sending access" and set `RESEND_API_KEY`.
 4. Set `CONTACT_FROM_EMAIL` to an address on the verified domain.
 
@@ -176,7 +190,7 @@ What they don't cover:
 
 To restore a copy locally: stop the server, delete `data/site.db`, `data/site.db-wal` and
 `data/site.db-shm`, put the downloaded file in their place named `site.db`, and start the
-server again. The steps for restoring on Railway **(phase 9)** will be added with the deploy.
+server again. Restoring on Railway is still to be written up.
 
 ## Troubleshooting
 
@@ -185,6 +199,8 @@ server again. The steps for restoring on Railway **(phase 9)** will be added wit
   `npx eslint src --ignore-pattern '**/.#*'`.
 - **Build fails with a Turbopack panic ("…was canceled"):** delete the build cache with
   `rm -rf .next` and build again.
+- **The site returns 502 on Railway:** check that `HOSTNAME=0.0.0.0` is set. The deploy log
+  should say the server is listening on `http://0.0.0.0:8080`, not on the container's name.
 - **Contact form says it sent, but nothing arrived:** check the server logs. Without
   `RESEND_API_KEY` the message is only logged; with it, a Resend error is logged as
   `[contact] sending failed`.
